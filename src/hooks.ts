@@ -58,6 +58,8 @@ export function assertCandidate (): MessageHook<Message, DefaultContext<Message,
     if (!message.data?.candidate) {
       throw new WebSocketError(4400, 'Missing ICE Candidate')
     }
+
+    return next()
   }
 }
 
@@ -67,6 +69,8 @@ export function assertSdp (): MessageHook<Message, DefaultContext<Message, State
     if (!message.data?.sdp) {
       throw new WebSocketError(4400, 'Missing SDP')
     }
+
+    return next()
   }
 }
 
