@@ -1,0 +1,35 @@
+{
+  "name": "@signal-fire/server",
+  "version": "0.1.0",
+  "description": "WebRTC signaling server for node.js",
+  "main": "./dist/index.js",
+  "author": "Michiel van der Velde <michiel@michielvdvelde.nl>",
+  "homepage": "http://github.com/Signal-Fire/server",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Signal-Fire/server.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "keywords": [
+    "webrtc",
+    "data",
+    "rtc",
+    "websocket",
+    "json"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/ws": "^7.4.0"
+  },
+  "dependencies": {
+    "@lucets/commands": "^0.2.0",
+    "@lucets/luce": "^0.2.1",
+    "@lucets/registry": "^0.2.0",
+    "nanoid": "^3.1.20"
+  }
+}
