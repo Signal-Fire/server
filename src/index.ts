@@ -35,13 +35,16 @@ export interface State {
   deleteOnClose?: boolean
 }
 
-export type Application = Luce<Message, State> & {
-  commands?: Commands<Message, State>
+export type Application<TMessage, TState> = Luce<TMessage, TState> & {
+  commands?: Commands<TMessage, TState>
 }
 
-export default function createApp (registry: Registry<DefaultClientInfo, Message>): Application {
-  const app: Application = new Luce<Message, State>()
-  const commands = app.commands = new Commands<Message, State>()
+export default function createApp<
+  TMessage extends Message = Message,
+  TState extends State = State
+> (registry: Registry<DefaultClientInfo, TMessage>): Application<TMessage, TState> {
+  const app: Application<TMessage, TState> = new Luce()
+  const commands = app.commands = new Commands<TMessage, TState>()
 
   // Upgrade POST hook to set ID if not set yet
   app.useUpgrade('post', async (ctx, next) => {
@@ -72,6 +75,7 @@ export default function createApp (registry: Registry<DefaultClientInfo, Message
     // Register the client with the registry
     await registry.register(id, ctx.socket)
 
+    // @ts-ignore
     await ctx.send({
       id: await nanoid(),
       cmd: 'id',
