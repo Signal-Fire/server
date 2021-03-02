@@ -1,7 +1,17 @@
 # Protocol
 
-The protocol is JSON-based. The message is stringified
-and sent over the connection as a string.
+The protocol is JSON-based. This document presents
+the protocol from the Client's side.
+
+The object is stringified and sent over the WebSocket
+connection. The Server should only expect/process string
+messages and discard/error other formats.
+
+Each message should have an ID. The Server should
+acknowledge each message by using the same message ID.
+
+An outgoing message, as seen by the Client, has the
+following properties:
 
 ```ts
 interface OutgoingMessage {
@@ -17,6 +27,9 @@ interface OutgoingMessage {
 }
 ```
 
+An incoming message, as seen by the Client, has the
+following properties:
+
 ```ts
 interface IncomingMessage {
     id: string,
@@ -31,11 +44,14 @@ interface IncomingMessage {
 }
 ```
 
-## Welcome
+## Handshake
 
-The Server sends the client a `welcome` message which
-contains the client's ID. This ID can then be used by
-others to connect to the peer.
+The Server should sent a message with the command
+`welcome` to the Client, which contains the Client's
+ID.
+
+The Client ID can be used by others to initiate
+sessions and exchange ICE candidates and offers/answers.
 
 If the connection process was successful the Server
 will send the following message:
@@ -45,7 +61,7 @@ will send the following message:
     "id": "<id>",
     "cmd": "welcome",
     "data": {
-        "id": "<id>
+        "id": "<client id>"
     }
 }
 ```
@@ -54,8 +70,12 @@ The client's ID is `data.id`.
 
 ## Sending to a Target
 
-The Server should respond to each message with
-an `ok` response.
+To send a message to another Client,
+set the `target` property to the target
+Client's ID.
+
+The Server should respond to each message
+with an OK/Error response.
 
 Request:
 
@@ -83,7 +103,7 @@ Error response:
     "id": "<id>",
     "ok": false,
     "data": {
-        "message": "<message."
+        "message": "Peer Not Found"
     }
 }
 ```
