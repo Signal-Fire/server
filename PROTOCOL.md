@@ -108,7 +108,7 @@ Error response:
 }
 ```
 
-## Sending an ICE candidate
+### Sending an ICE candidate
 
 ```json
 {
@@ -121,7 +121,7 @@ Error response:
 }
 ```
 
-## Sending an Offer and Answer
+### Sending an Offer and Answer
 
 Simply change the command from `offer` to `answer` to
 send an answer instead.
@@ -133,5 +133,44 @@ send an answer instead.
     "data": {
         "sdp": "<sdp>"
     }
+}
+```
+
+## Receiving from an Origin
+
+The Client has received a message from another Client
+when the `origin` property is set.
+
+```json
+{
+  "id": "<id>",
+  "cmd": "session-start",
+  "origin": "<origin id>"
+}
+```
+
+### Receibing an ICE Candidate
+
+```json
+{
+  "id": "<id>",
+  "cmd": "ice",
+  "origin": "<origin id>",
+  "data": {
+    "ice": "<ice>"
+  }
+}
+```
+
+### Receibing an Offer or Answer
+
+```json
+{
+  "id": "<id>",
+  "cmd": "offer",
+  "origin": "<origin id>",
+  "data": {
+    "sdp": "<sdp>"
+  }
 }
 ```
