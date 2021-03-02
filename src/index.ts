@@ -86,45 +86,30 @@ export default function createApp<
   })
 
   commands.use('session-start',
-    catchErrors(),
-    catchRegistryErrors(),
-    catchWebSocketErrors(),
     assertTarget(registry),
     pipe(registry),
     sendOk()
   )
 
   commands.use('session-accept',
-    catchErrors(),
-    catchRegistryErrors(),
-    catchWebSocketErrors(),
     assertTarget(registry),
     pipe(registry),
     sendOk()
   )
 
   commands.use('session-reject',
-    catchErrors(),
-    catchRegistryErrors(),
-    catchWebSocketErrors(),
     assertTarget(registry),
     pipe(registry),
     sendOk()
   )
 
   commands.use('session-cancel',
-    catchErrors(),
-    catchRegistryErrors(),
-    catchWebSocketErrors(),
     assertTarget(registry),
     pipe(registry),
     sendOk()
   )
 
   commands.use('ice',
-    catchErrors(),
-    catchRegistryErrors(),
-    catchWebSocketErrors(),
     assertTarget(registry),
     assertCandidate(),
     pipe(registry, true),
@@ -132,9 +117,6 @@ export default function createApp<
   )
 
   commands.use('offer',
-    catchErrors(),
-    catchRegistryErrors(),
-    catchWebSocketErrors(),
     assertTarget(registry),
     assertSdp(),
     pipe(registry, true),
@@ -142,16 +124,18 @@ export default function createApp<
   )
 
   commands.use('answer',
-    catchErrors(),
-    catchRegistryErrors(),
-    catchWebSocketErrors(),
     assertTarget(registry),
     assertSdp(),
     pipe(registry, true),
     sendOk()
   )
 
-  app.useMessage(commands.compose())
+  app.useMessage(
+    catchErrors(),
+    catchRegistryErrors(),
+    catchWebSocketErrors(),
+    commands.compose()
+  )
 
   return app
 }
