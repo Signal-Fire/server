@@ -42,8 +42,9 @@ export type Application<TMessage, TState> = Luce<TMessage, TState> & {
 
 export default function createApp<
   TMessage extends Message = Message,
-  TState extends State = State
-> (registry: Registry<DefaultClientInfo, TMessage>): Application<TMessage, TState> {
+  TState extends State = State,
+  TClientInfo extends DefaultClientInfo = DefaultClientInfo
+> (registry: Registry<TClientInfo, TMessage>): Application<TMessage, TState> {
   const app: Application<TMessage, TState> = new Luce()
   const commands = app.commands = new Commands<TMessage, TState>()
 
