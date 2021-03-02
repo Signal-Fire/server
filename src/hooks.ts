@@ -156,7 +156,7 @@ export function catchWebSocketErrors (): MessageHook<Message, DefaultContext<Mes
     try {
       await next()
     } catch (e) {
-      if (e instanceof WebSocketError && e.expose) {
+      if (e instanceof WebSocketError && e.expose && message.id) {
         return ctx.send({
           id: message.id,
           ok: false,
