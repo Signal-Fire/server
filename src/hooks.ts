@@ -177,13 +177,18 @@ export function catchErrors (): MessageHook<Message, DefaultContext<Message, Sta
     try {
       await next()
     } catch (e) {
-      return ctx.send({
-        id: message.id,
-        ok: false,
-        data: {
-          message: 'Internal Server Error'
-        }
-      })
+      if (message.id) {
+        return ctx.send({
+          id: message.id,
+          ok: false,
+          data: {
+            message: 'Internal Server Error'
+          }
+        })
+      }
+
+      // Throw so the connection is closed
+      throw e
     }
   }
 }
