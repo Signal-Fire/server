@@ -5,8 +5,8 @@
 ## Install
 
 The Server is currently a work-in-progress.
-f you want to take a look at it anyway,
-you can install the module through npm:I
+If you want to take a look at it anyway,
+you can install the module through npm:
 
 ```
 npm i @signal-fire/server
