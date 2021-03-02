@@ -25,7 +25,10 @@ export function pipe (registry: Registry, data = false): MessageHook<Message, De
 
 /** Sends an OK response. */
 export function sendOk (): MessageHook<Message, DefaultContext<Message, State>> {
-  return async function sendOk (message, ctx) {
+  return async function sendOk (message, ctx, next) {
+    // Execute all other hooks first
+    await next()
+
     return ctx.send({
       id: message.id,
       ok: true
