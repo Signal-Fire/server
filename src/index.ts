@@ -3,7 +3,6 @@
 import Luce from '@lucets/luce'
 import Commands from '@lucets/commands'
 import { Registry, DefaultClientInfo } from '@lucets/registry'
-import { nanoid } from 'nanoid/async'
 
 import {
   assertCandidate,
