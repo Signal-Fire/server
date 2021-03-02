@@ -13,6 +13,7 @@ import {
   catchErrors,
   catchRegistryErrors,
   catchWebSocketErrors,
+  handleUpgrade,
   pipe,
   sendOk
 } from './hooks'
@@ -47,44 +48,7 @@ export default function createApp<
   const app: Application<TMessage, TState> = new Luce()
   const commands = app.commands = new Commands<TMessage, TState>()
 
-  // Upgrade POST hook to set ID if not set yet
-  app.useUpgrade('post', async (ctx, next) => {
-    await next()
-
-    // Set ID if previous hooks haven't
-    const id = ctx.state.id = ctx.state.id ?? await nanoid()
-
-    // Set deleteOnClose if previous hooks haven't
-    if (typeof ctx.state.deleteOnClose !== 'boolean') {
-      ctx.state.deleteOnClose = true
-    }
-
-    // Create client in registry if it doesn't exist
-    if (!await registry.exists(id)) {
-      await registry.create(id)
-    }
-
-    // Handle socket close
-    ctx.socket.once('close', async () => {
-      await registry.unregister(ctx.state.id)
-
-      if (ctx.state.deleteOnClose === true) {
-        await registry.delete(ctx.state.id)
-      }
-    })
-
-    // Register the client with the registry
-    await registry.register(id, ctx.socket)
-
-    // @ts-ignore
-    await ctx.send({
-      id: await nanoid(),
-      cmd: 'id',
-      data: {
-        id: ctx.state.id
-      }
-    })
-  })
+  app.useUpgrade('post', handleUpgrade(registry))
 
   commands.use('session-start',
     assertId(),

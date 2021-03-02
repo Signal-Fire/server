@@ -1,9 +1,50 @@
 'use strict'
 
-import { MessageHook, DefaultContext, WebSocketError } from '@lucets/luce'
+import { MessageHook, DefaultContext, WebSocketError, UpgradeHook } from '@lucets/luce'
 import { Registry, RegistryError } from '@lucets/registry'
 import { nanoid } from 'nanoid/async'
 import { Message, State } from './index'
+
+export function handleUpgrade (registry: Registry): UpgradeHook<DefaultContext<Message, State>> {
+  return async function handleUpgrade (ctx, next) {
+    // Run all other post hooks first
+    await next()
+
+    // Set ID if previous hooks haven't
+    const id = ctx.state.id = ctx.state.id ?? await nanoid()
+
+    // Set deleteOnClose if previous hooks haven't
+    if (typeof ctx.state.deleteOnClose !== 'boolean') {
+      ctx.state.deleteOnClose = true
+    }
+
+    // Create client in registry if it doesn't exist
+    if (!await registry.exists(id)) {
+      await registry.create(id)
+    }
+
+    // Handle socket close
+    ctx.socket.once('close', async () => {
+      await registry.unregister(ctx.state.id)
+
+      if (ctx.state.deleteOnClose === true) {
+        await registry.delete(ctx.state.id)
+      }
+    })
+
+    // Register the client with the registry
+    await registry.register(id, ctx.socket)
+
+    // @ts-ignore
+    await ctx.send({
+      id: await nanoid(),
+      cmd: 'welcome',
+      data: {
+        id: ctx.state.id
+      }
+    })
+  }
+}
 
 /** Pipe the message command (and optionally data) to the target client. */
 export function pipe (registry: Registry, data = false): MessageHook<Message, DefaultContext<Message, State>> {
