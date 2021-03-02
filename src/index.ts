@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid/async'
 
 import {
   assertCandidate,
+  assertId,
   assertSdp,
   assertTarget,
   catchErrors,
@@ -86,30 +87,35 @@ export default function createApp<
   })
 
   commands.use('session-start',
+    assertId(),
     assertTarget(registry),
     pipe(registry),
     sendOk()
   )
 
   commands.use('session-accept',
+    assertId(),
     assertTarget(registry),
     pipe(registry),
     sendOk()
   )
 
   commands.use('session-reject',
+    assertId(),
     assertTarget(registry),
     pipe(registry),
     sendOk()
   )
 
   commands.use('session-cancel',
+    assertId(),
     assertTarget(registry),
     pipe(registry),
     sendOk()
   )
 
   commands.use('ice',
+    assertId(),
     assertTarget(registry),
     assertCandidate(),
     pipe(registry, true),
@@ -117,6 +123,7 @@ export default function createApp<
   )
 
   commands.use('offer',
+    assertId(),
     assertTarget(registry),
     assertSdp(),
     pipe(registry, true),
@@ -124,6 +131,7 @@ export default function createApp<
   )
 
   commands.use('answer',
+    assertId(),
     assertTarget(registry),
     assertSdp(),
     pipe(registry, true),

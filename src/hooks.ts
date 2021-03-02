@@ -36,6 +36,17 @@ export function sendOk (): MessageHook<Message, DefaultContext<Message, State>> 
   }
 }
 
+/** Asserts if the message had an ID. */
+export function assertId (): MessageHook<Message, DefaultContext<Message, State>> {
+  return async function assertId (message, ctx, next) {
+    if (!message.id) {
+      throw new WebSocketError(4400, 'Missing message ID')
+    }
+
+    return next()
+  }
+}
+
 /** Asserts if a target is set, exists, and is online. */
 export function assertTarget (registry: Registry): MessageHook<Message, DefaultContext<Message, State>> {
   return async function assertTarget (message, ctx, next) {
