@@ -149,7 +149,7 @@ when the `origin` property is set.
 }
 ```
 
-### Receibing an ICE Candidate
+### Receiving an ICE Candidate
 
 ```json
 {
@@ -162,7 +162,7 @@ when the `origin` property is set.
 }
 ```
 
-### Receibing an Offer or Answer
+### Receiving an Offer or Answer
 
 ```json
 {
