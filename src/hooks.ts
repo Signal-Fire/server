@@ -5,7 +5,7 @@ import { Registry, RegistryError } from '@lucets/registry'
 import { nanoid } from 'nanoid/async'
 import { Message, State } from './index'
 
-export function handleUpgrade (registry: Registry): UpgradeHook<DefaultContext<Message, State>> {
+export function handleUpgrade (registry: Registry, config?: RTCConfiguration): UpgradeHook<DefaultContext<Message, State>> {
   return async function handleUpgrade (ctx, next) {
     // Run all other post hooks first
     await next()
@@ -35,14 +35,19 @@ export function handleUpgrade (registry: Registry): UpgradeHook<DefaultContext<M
     // Register the client with the registry
     await registry.register(id, ctx.socket)
 
-    // @ts-ignore
-    await ctx.send({
+    const message: Message = {
       id: await nanoid(),
       cmd: 'welcome',
       data: {
         id: ctx.state.id
       }
-    })
+    }
+
+    if (config) {
+      message.data.config = config
+    }
+
+    await ctx.send(message)
   }
 }
 

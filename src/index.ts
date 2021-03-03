@@ -27,7 +27,8 @@ export interface Message {
     id?: string,
     candidate?: string,
     sdp?: string,
-    message?: string
+    message?: string,
+    config?: RTCConfiguration
   }
 }
 
@@ -44,11 +45,11 @@ export default function createApp<
   TMessage extends Message = Message,
   TState extends State = State,
   TClientInfo extends DefaultClientInfo = DefaultClientInfo
-> (registry: Registry<TClientInfo, TMessage>): Application<TMessage, TState> {
+> (registry: Registry<TClientInfo, TMessage>, config?: RTCConfiguration): Application<TMessage, TState> {
   const app: Application<TMessage, TState> = new Luce()
   const commands = app.commands = new Commands<TMessage, TState>()
 
-  app.useUpgrade('post', handleUpgrade(registry))
+  app.useUpgrade('post', handleUpgrade(registry, config))
 
   commands.use('session-start',
     assertId(),
