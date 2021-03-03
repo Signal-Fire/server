@@ -13,14 +13,14 @@ export function handleUpgrade (registry: Registry): UpgradeHook<DefaultContext<M
     // Set ID if previous hooks haven't
     const id = ctx.state.id = ctx.state.id ?? await nanoid()
 
-    // Set deleteOnClose if previous hooks haven't
-    if (typeof ctx.state.deleteOnClose !== 'boolean') {
-      ctx.state.deleteOnClose = true
-    }
-
     // Create client in registry if it doesn't exist
     if (!await registry.exists(id)) {
       await registry.create(id)
+
+      // Set deleteOnClose if previous hooks haven't
+      if (typeof ctx.state.deleteOnClose !== 'boolean') {
+        ctx.state.deleteOnClose = true
+      }
     }
 
     // Handle socket close
