@@ -18,6 +18,10 @@ There is no documentation. Yet.
 
 ## Example
 
+> There's also a [CLI available](https://github.com/Signal-Fire/cli)
+> for a quick set up of a basic server. Functonality
+> will be added over time.
+
 In this example we use the `LocalRegistry` in-memory
 registry from the [@lucets/registry](https://github.com/lucets/registry) package.
 
