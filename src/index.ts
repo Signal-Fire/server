@@ -37,7 +37,10 @@ export interface State {
   deleteOnClose?: boolean
 }
 
-export type Application<TMessage, TState> = Luce<TMessage, TState> & {
+export type Application<
+  TMessage extends Message = Message,
+  TState extends State = State
+> = Luce<TMessage, TState> & {
   commands?: Commands<TMessage, TState>
 }
 
