@@ -10,7 +10,8 @@ directly with each other.
 
 * WebSockets powered __[WebRTC](https://en.wikipedia.org/wiki/WebRTC) signaling server__
   * Messages are passed using simple JSON objects
-  * There is a __tailor-made__ [browser client](https://github.com/Signal-Fire/client)
+* There is a __tailor-made [browser client](https://github.com/Signal-Fire/client)__
+  available as well
 * __Automatic__ peer ID generation (also possible to plug in your own)
 * __Automatic__ routing of messages
 * Supports __one-to-one__, __one-to-many__ and __many-to-many__ out of the box
