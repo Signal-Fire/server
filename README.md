@@ -2,25 +2,58 @@
 
 **Signal-Fire Server** is a **WebRTC** signaling server built for node.js.
 
+A WebRTC signaling server communicates between peers to set up peer-to-peer
+audio/video and/or data channels. This allows your clients to communicate
+directly with each other.
+
+## Features
+
+* WebSockets powered __[WebRTC](https://en.wikipedia.org/wiki/WebRTC) signaling server__
+  * Messages are passed using simple JSON objects
+  * There is a __tailor-made__ [browser client](https://github.com/Signal-Fire/client)
+* __Automatic__ peer ID generation (also possible to plug in your own)
+* __Automatic__ routing of messages
+* Supports __one-to-one__, __one-to-many__ and __many-to-many__ out of the box
+* Horizontally __scalable__ by using [registries](https://github.com/lucets/registry)
+
 ## Install
 
-The Server is currently a work-in-progress.
-If you want to take a look at it anyway,
-you can install the module through npm:
+> The Server is currently a __work-in-progress__. You can help
+> by reporting bugs or unexpected behavior. If you encounter
+> anything, please open an issue, or even better, a pull request.
+
+Install the module through npm:
 
 ```
 npm i @signal-fire/server
 ```
+
+## Command Line Interface (CLI)
+
+There is also a CLI available to start and manage multiple
+workers simultaneously. The CLI is a work-in-progress,
+but can already be used.
+
+To install the CLI:
+
+```
+npm i -g @signal-fire/cli
+```
+
+To start a new worker on port 3003:
+
+```
+> signal-fire start -p 3003
+```
+
+[See the CLI documentation](https://github.com/Signal-Fire/cli)
+to learn how to use the CLI.
 
 ## Documentation
 
 There is no documentation. Yet.
 
 ## Example
-
-> There's also a [CLI available](https://github.com/Signal-Fire/cli)
-> for a quick set up of a basic server. Functonality
-> will be added over time.
 
 In this example we use the `LocalRegistry` in-memory
 registry from the [@lucets/registry](https://github.com/lucets/registry) package.
