@@ -28,7 +28,13 @@ export interface Message {
     candidate?: string,
     sdp?: string,
     message?: string,
-    config?: RTCConfiguration
+    config?: {
+      bundlePolicy?: RTCBundlePolicy,
+      iceCandidatePoolSize?: number,
+      iceServers?: RTCIceServer[],
+      iceTransportPolicy?: RTCIceTransportPolicy,
+      rtcpMuxPolicy?: RTCRtcpMuxPolicy
+    }
   }
 }
 
