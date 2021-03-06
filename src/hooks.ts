@@ -54,6 +54,9 @@ export function handleUpgrade (registry: Registry, config?: RTCConfiguration): U
 /** Pipe the message command (and optionally data) to the target client. */
 export function pipe (registry: Registry, data = false): MessageHook<Message, DefaultContext<Message, State>> {
   return async function pipe (message, ctx, next) {
+    // Execute all other hooks first
+    await next()
+
     const request: Message = {
       id: await nanoid(),
       cmd: message.cmd,
@@ -65,7 +68,6 @@ export function pipe (registry: Registry, data = false): MessageHook<Message, De
     }
 
     await registry.send(message.target, request)
-    return next()
   }
 }
 
