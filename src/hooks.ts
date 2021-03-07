@@ -102,6 +102,10 @@ export function assertTarget (registry: Registry): MessageHook<Message, DefaultC
       throw new WebSocketError(4400, 'Missing Target')
     }
 
+    if (ctx.state.id === message.target) {
+      throw new WebSocketError(4440, 'Can\'t Send to Yourself')
+    }
+
     const info = await registry.info(message.target)
 
     if (!info) {
