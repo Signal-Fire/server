@@ -34,7 +34,7 @@ const app = createApp(registry)
 
 app.useUpgrade('pre', async function auth (ctx, next) => {
   // Get the token from the query, if set
-  const token = parse(ctx.req.url).quary['token']
+  const token = parse(ctx.req.url).query['token']
 
   if (!token) {
     throw createHttpError(401, 'Mising token')
