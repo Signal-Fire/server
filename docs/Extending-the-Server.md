@@ -60,3 +60,84 @@ Now, any Client connecting to the Server will need to
 have a valid `token`.
 
 You just added simple authentication!
+
+## Counting Session Messages
+
+In the next example we want to count the number of
+session start, accept, and reject messages received
+by the Server. We store this info in a `Stats` object.
+
+In this case we will be adding a stats hook to each
+command we want to count. We write a single function which
+we can use for all commands.
+
+Command message hooks are inserted after initial validation
+of the message has succeeded. This means that if you throw
+an error, it will be handled by the upstream hooks.
+
+```typescript
+import {
+  MessageHook,
+  DefaultContext,
+  Message,
+  State
+} from '@lucets/luce'
+
+const stats = {
+  sessionStartMessages: 0,
+  sessionAcceptMessages: 0,
+  sessionRejectMessages: 0
+}
+
+// This function will return the message hook
+function countMessages (): Promise<MessageHook<Message, DefaultContext<Message, State>>> {
+  // this is our hook
+  return async function countMessages (message, _ctx, next) {
+    // We use the command name to figure out which stat to increment
+    switch (message.cmd) {
+      case 'session-start':
+        stats.sessionStartMessages++
+        break
+      case 'session-accept':
+        stats.sessionAcceptMessages++
+        break
+      case 'session-reject':
+        stats.sessionRejectMessages++
+        break
+    }
+  }
+}
+
+// We add the message hook to each command
+app.commands.use('session-start', countMessages())
+app.commands.use('session-accept', countMessages())
+app.commands.use('session-reject', countMessages())
+```
+
+We now count the number of received messages for each command.
+
+## Adding a New Command
+
+Imagine we want to add a `exists` command, which tells the
+client if the given target ID exists.
+
+```typescript
+app.commands.use('exists', async (message, ctx, next) => {
+  // Check the registry to see if the ID exists
+  const exists = await ctx.app.registry.exists(message.target)
+
+  // Send a reply to the client
+  await ctx.send({
+    // IMPORTANT: The reponse ID has to be
+    // identical to the request ID!
+    id: message.id,
+    // The request was successful
+    ok: true,
+    data: {
+      exists
+    }
+  })
+})
+```
+
+We have now added a new command which clients can call.

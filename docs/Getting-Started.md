@@ -22,7 +22,7 @@ The [registry package](https://github.com/lucets/registr)
 contains an in-memory registry to get you started. It can
 also be used as a reference implementation.
 
-## Setting up a basic Server
+## Setting up a Basic Server
 
 In the below example we use `LocalRegistry` as the registry.
 The in-memory registry is meant for development purposed
