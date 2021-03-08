@@ -9,7 +9,7 @@ directly with each other.
 ## Features
 
 * WebSockets powered __[WebRTC](https://en.wikipedia.org/wiki/WebRTC) signaling server__
-  * Messages are passed using simple JSON objects
+  * Messages are passed using [simple JSON objects](https://github.com/Signal-Fire/server/blob/main/PROTOCOL.md)
 * There is a __tailor-made [browser client](https://github.com/Signal-Fire/client)__
   available as well
 * __Automatic__ peer ID generation (also possible to plug in your own)
@@ -19,9 +19,9 @@ directly with each other.
 
 ## Install
 
-> The Server is currently a __work-in-progress__. You can help
-> by reporting bugs or unexpected behavior. If you encounter
-> anything, please open an issue, or even better, a pull request.
+> You can help by reporting bugs or unexpected behavior.
+> If you encounter anything, please open an issue, or even
+> better, a pull request.
 
 Install the module through npm:
 
@@ -52,7 +52,7 @@ to learn how to use the CLI.
 
 ## Documentation
 
-There is no documentation. Yet.
+[Click here to view the documentation](https://signal-fire.github.io/server/).
 
 ## Example
 
