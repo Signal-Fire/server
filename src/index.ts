@@ -63,6 +63,7 @@ export default function createApp<
   app.useUpgrade('post', handleUpgrade(registry, config))
 
   commands.use('session-start',
+    // @ts-ignore
     assertId(),
     assertTarget(registry),
     pipe(registry),
@@ -70,6 +71,7 @@ export default function createApp<
   )
 
   commands.use('session-accept',
+    // @ts-ignore
     assertId(),
     assertTarget(registry),
     pipe(registry),
@@ -77,6 +79,7 @@ export default function createApp<
   )
 
   commands.use('session-reject',
+    // @ts-ignore
     assertId(),
     assertTarget(registry),
     pipe(registry),
@@ -84,6 +87,7 @@ export default function createApp<
   )
 
   commands.use('session-cancel',
+    // @ts-ignore
     assertId(),
     assertTarget(registry),
     pipe(registry),
@@ -91,6 +95,7 @@ export default function createApp<
   )
 
   commands.use('ice',
+    // @ts-ignore
     assertId(),
     assertTarget(registry),
     assertCandidate(),
@@ -99,6 +104,7 @@ export default function createApp<
   )
 
   commands.use('offer',
+    // @ts-ignore
     assertId(),
     assertTarget(registry),
     assertSdp(),
@@ -107,6 +113,7 @@ export default function createApp<
   )
 
   commands.use('answer',
+    // @ts-ignore
     assertId(),
     assertTarget(registry),
     assertSdp(),
@@ -118,6 +125,7 @@ export default function createApp<
     catchErrors(),
     catchRegistryErrors(),
     catchWebSocketErrors(),
+    // @ts-ignore
     commands.compose()
   )
 
