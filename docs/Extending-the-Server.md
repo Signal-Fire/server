@@ -90,7 +90,7 @@ const stats = {
 }
 
 // This function will return the message hook
-function countMessages (): Promise<MessageHook<Message, DefaultContext<Message, State>>> {
+function countMessages (): MessageHook<Message, DefaultContext<Message, State>> {
   // this is our hook
   return async function countMessages (message, _ctx, next) {
     // We use the command name to figure out which stat to increment
