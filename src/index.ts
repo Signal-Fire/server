@@ -7,7 +7,8 @@ import { Registry, DefaultClientInfo } from '@lucets/registry'
 import {
   assertCandidate,
   assertId,
-  assertSdp,
+  assertOffer,
+  assertAnswer,
   assertTarget,
   catchErrors,
   catchRegistryErrors,
@@ -33,10 +34,11 @@ export interface Message {
   origin?: string,
   data?: {
     id?: string,
-    candidate?: string,
-    sdp?: string,
+    offer?: RTCSessionDescription,
+    answer?: RTCSessionDescription,
+    candidate?: RTCIceCandidate,
     message?: string,
-    config?: RtcConfiguration
+    configuration?: RtcConfiguration
   }
 }
 
@@ -63,7 +65,6 @@ export default function createApp<
   app.useUpgrade('post', handleUpgrade(registry, config))
 
   commands.use('session-start',
-    // @ts-ignore
     assertId(),
     assertTarget(registry),
     pipe(registry),
@@ -71,7 +72,6 @@ export default function createApp<
   )
 
   commands.use('session-accept',
-    // @ts-ignore
     assertId(),
     assertTarget(registry),
     pipe(registry),
@@ -79,7 +79,6 @@ export default function createApp<
   )
 
   commands.use('session-reject',
-    // @ts-ignore
     assertId(),
     assertTarget(registry),
     pipe(registry),
@@ -87,7 +86,6 @@ export default function createApp<
   )
 
   commands.use('session-cancel',
-    // @ts-ignore
     assertId(),
     assertTarget(registry),
     pipe(registry),
@@ -95,7 +93,6 @@ export default function createApp<
   )
 
   commands.use('ice',
-    // @ts-ignore
     assertId(),
     assertTarget(registry),
     assertCandidate(),
@@ -104,19 +101,17 @@ export default function createApp<
   )
 
   commands.use('offer',
-    // @ts-ignore
     assertId(),
     assertTarget(registry),
-    assertSdp(),
+    assertOffer(),
     pipe(registry, true),
     sendOk()
   )
 
   commands.use('answer',
-    // @ts-ignore
     assertId(),
     assertTarget(registry),
-    assertSdp(),
+    assertAnswer(),
     pipe(registry, true),
     sendOk()
   )
@@ -125,7 +120,6 @@ export default function createApp<
     catchErrors(),
     catchRegistryErrors(),
     catchWebSocketErrors(),
-    // @ts-ignore
     commands.compose()
   )
 

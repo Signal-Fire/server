@@ -44,7 +44,7 @@ export function handleUpgrade (registry: Registry, config?: RTCConfiguration): U
     }
 
     if (config) {
-      message.data.config = config
+      message.data.configuration = config
     }
 
     await ctx.send(message)
@@ -129,11 +129,22 @@ export function assertCandidate (): MessageHook<Message, DefaultContext<Message,
   }
 }
 
-/** Asserts if SDP data is present. */
-export function assertSdp (): MessageHook<Message, DefaultContext<Message, State>> {
-  return async function assertSdp (message, ctx, next) {
-    if (!message.data?.sdp) {
-      throw new WebSocketError(4400, 'Missing SDP')
+/** Asserts if the offer is present. */
+export function assertOffer (): MessageHook<Message, DefaultContext<Message, State>> {
+  return async function assertOffer (message, ctx, next) {
+    if (!message.data?.offer) {
+      throw new WebSocketError(4400, 'Missing Offer')
+    }
+
+    return next()
+  }
+}
+
+/** Asserts if the answer is present. */
+export function assertAnswer (): MessageHook<Message, DefaultContext<Message, State>> {
+  return async function assertAnswer (message, ctx, next) {
+    if (!message.data?.answer) {
+      throw new WebSocketError(4400, 'Missing Answer')
     }
 
     return next()
