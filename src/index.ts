@@ -18,14 +18,6 @@ import {
   sendOk
 } from './hooks'
 
-export interface RtcConfiguration {
-  bundlePolicy?: RTCBundlePolicy,
-  iceCandidatePoolSize?: number,
-  iceServers?: RTCIceServer[],
-  iceTransportPolicy?: RTCIceTransportPolicy,
-  rtcpMuxPolicy?: RTCRtcpMuxPolicy
-}
-
 export interface Message {
   id?: string,
   cmd?: string,
@@ -38,7 +30,7 @@ export interface Message {
     answer?: RTCSessionDescription,
     candidate?: RTCIceCandidate,
     message?: string,
-    configuration?: RtcConfiguration
+    configuration?: RTCConfiguration
   }
 }
 
@@ -58,11 +50,11 @@ export default function createApp<
   TMessage extends Message = Message,
   TState extends State = State,
   TClientInfo extends DefaultClientInfo = DefaultClientInfo
-> (registry: Registry<TClientInfo, TMessage>, config?: RtcConfiguration): Application<TMessage, TState> {
+> (registry: Registry<TClientInfo, TMessage>, configuration?: RTCConfiguration): Application<TMessage, TState> {
   const app: Application<TMessage, TState> = new Luce()
   const commands = app.commands = new Commands<TMessage, TState>()
 
-  app.useUpgrade('post', handleUpgrade(registry, config))
+  app.useUpgrade('post', handleUpgrade(registry, configuration))
 
   commands.use('session-start',
     assertId(),
