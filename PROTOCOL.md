@@ -19,9 +19,10 @@ interface OutgoingMessage {
     cmd: string,
     target: string,
     data?: {
-        id?: string
-        candidate?: string,
-        sdp?: string,
+        id?: string,
+        offer: RTCSessionDescription,
+        answer: RTCSessionDescription,
+        candidate?: RTCICECandidate,
         message?: string
     }
 }
@@ -37,8 +38,9 @@ interface IncomingMessage {
     cmd?: string,
     origin?: string,
     data?: {
-        candidate?: string,
-        sdp?: string,
+        offer: RTCSessionDescription,
+        answer: RTCSessionDescription,
+        candidate?: RTCICECandidate,
         message?: string
     }
 }
@@ -131,7 +133,7 @@ send an answer instead.
     "id": "<id>",
     "cmd": "offer",
     "data": {
-        "sdp": "<sdp>"
+        "offer": "<offer>"
     }
 }
 ```
@@ -157,7 +159,7 @@ when the `origin` property is set.
   "cmd": "ice",
   "origin": "<origin id>",
   "data": {
-    "ice": "<ice>"
+    "candidate": "<candidate>"
   }
 }
 ```
@@ -170,7 +172,7 @@ when the `origin` property is set.
   "cmd": "offer",
   "origin": "<origin id>",
   "data": {
-    "sdp": "<sdp>"
+    "offer": "<offer>"
   }
 }
 ```
