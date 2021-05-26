@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@lucets/commands": "^0.4.0",
-    "@lucets/luce": "^0.4.0",
+    "@lucets/luce": "^0.4.2",
     "@lucets/registry": "^0.2.0",
     "nanoid": "^3.1.22"
   }
