@@ -1,6 +1,6 @@
 'use strict'
 
-import Luce from '@lucets/luce'
+import Luce, { DefaultContext } from '@lucets/luce'
 import Commands from '@lucets/commands'
 import { Registry, DefaultClientInfo } from '@lucets/registry'
 
@@ -43,7 +43,7 @@ export type Application<
   TMessage extends Message = Message,
   TState extends State = State
 > = Luce<TMessage, TState> & {
-  commands?: Commands<TMessage, TState>
+  commands?: Commands<TMessage, DefaultContext<TMessage, TState>>
 }
 
 export default function createApp<
@@ -52,7 +52,7 @@ export default function createApp<
   TClientInfo extends DefaultClientInfo = DefaultClientInfo
 > (registry: Registry<TClientInfo, TMessage>, configuration?: RTCConfiguration): Application<TMessage, TState> {
   const app: Application<TMessage, TState> = new Luce()
-  const commands = app.commands = new Commands<TMessage, TState>()
+  const commands = app.commands = new Commands<TMessage, DefaultContext<TMessage, TState>>()
 
   app.useUpgrade('post', handleUpgrade(registry, configuration))
 
